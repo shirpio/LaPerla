@@ -1,0 +1,33 @@
+﻿@model List<PracticaProfesional2025.Models.DetalleVenta>
+
+<h2 style="text-align:center">
+    Reporte del día @Model.First().Fecha.ToShortDateString()
+</h2>
+
+<table style="width:100%; border-collapse: collapse;" border="1">
+    <thead>
+        <tr>
+            <th>Producto</th>
+            <th>Tipo</th>
+            <th>Cantidad</th>
+            <th>Subtotal</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Producto?.Nombre</td>
+                <td>@item.Producto?.Tipo</td>
+                <td>@item.Cantidad</td>
+                <td>$@item.Subtotal</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<p style="text-align:right; margin-top:20px;">
+    <strong>Total:</strong> $
+    @Model.Sum(x => x.Subtotal)
+</p>
+

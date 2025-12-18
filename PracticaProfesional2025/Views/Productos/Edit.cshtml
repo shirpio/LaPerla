@@ -1,0 +1,73 @@
+﻿@model PracticaProfesional2025.Models.Producto
+
+@{
+    ViewData["Title"] = "Editar producto";
+}
+
+<div class="container mt-4">
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-warning text-dark">
+            <h5 class="mb-0">
+                <i class="bi bi-pencil-square"></i> Editar producto
+            </h5>
+        </div>
+
+        <div class="card-body">
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div class="alert alert-danger">
+                    <i class="bi bi-exclamation-triangle-fill"></i>
+                    Por favor corregí los errores antes de continuar.
+                </div>
+            }
+
+            <form asp-action="Edit">
+                <input type="hidden" asp-for="Id" />
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <!-- Nombre -->
+                <div class="mb-3">
+                    <label asp-for="Nombre" class="form-label">Nombre del producto</label>
+                    <input asp-for="Nombre" class="form-control" />
+                    <span asp-validation-for="Nombre" class="text-danger"></span>
+                </div>
+
+                <!-- Precio -->
+                <div class="mb-3">
+                    <label asp-for="Precio" class="form-label">Precio</label>
+                    <div class="input-group">
+                        <span class="input-group-text">$</span>
+                        <input asp-for="Precio" class="form-control" min="0.01" step="0.01" />
+                    </div>
+                    <span asp-validation-for="Precio" class="text-danger"></span>
+                </div>
+
+                <!-- Tipo -->
+                <div class="mb-3">
+                    <label asp-for="Tipo" class="form-label">Tipo de venta</label>
+                    <select asp-for="Tipo"
+                            class="form-select"
+                            asp-items="ViewBag.Tipos">
+                    </select>
+                    <span asp-validation-for="Tipo" class="text-danger"></span>
+                </div>
+
+                <!-- Botones -->
+                <div class="d-flex justify-content-between">
+                    <a asp-action="Index" class="btn btn-outline-secondary">
+                        <i class="bi bi-arrow-left"></i> Volver
+                    </a>
+
+                    <button type="submit" class="btn btn-warning">
+                        <i class="bi bi-save"></i> Guardar cambios
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}
+

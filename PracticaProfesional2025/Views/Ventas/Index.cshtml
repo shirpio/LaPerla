@@ -1,0 +1,132 @@
+﻿@model PracticaProfesional2025.ViewModels.VentaViewModel
+@using PracticaProfesional2025.Models
+@using Newtonsoft.Json
+
+@{
+    ViewData["Title"] = "Registrar Venta";
+}
+
+<div class="container mt-4">
+    <h2 class="text-danger fw-bold mb-3"><i class="bi bi-cash-stack"></i> Nueva Venta</h2>
+
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body">
+
+            <form asp-action="AgregarProducto" method="post" class="row g-3">
+
+                <!-- PRODUCTO -->
+                <div class="col-md-4">
+                    <label class="form-label fw-semibold">Producto</label>
+                    <select name="ProductoId" id="ProductoId" class="form-select" required>
+                        <option value="">-- Seleccione --</option>
+                        @foreach (var p in ViewBag.Productos)
+                        {
+                            <option value="@p.Id">@p.Nombre</option>
+                        }
+                    </select>
+                </div>
+
+                <!-- TIPO VENTA -->
+                <div class="col-md-3">
+                    <label class="form-label fw-semibold">Tipo de Venta</label>
+                    <input type="text" id="TipoVenta" name="TipoVenta" class="form-control" readonly />
+                </div>
+
+                <!-- CANTIDAD / VALOR -->
+                <div class="col-md-3">
+                    <label class="form-label fw-semibold">Valor / Cantidad</label>
+                    <input type="number" step="1" name="Cantidad" id="Cantidad" class="form-control" placeholder="Ej: 2 o 2500" required />
+                </div>
+
+                <!-- BOTÓN -->
+                <div class="col-md-2 d-flex align-items-end">
+                    <button type="submit" class="btn btn-danger w-100">
+                        <i class="bi bi-cart-plus"></i> Agregar
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+    <!-- ======================== -->
+    <!--   SCRIPT INDEX VIEW      -->
+    <!-- ======================== -->
+    <script>
+        const productos = @Html.Raw(JsonConvert.SerializeObject(ViewBag.Productos));
+
+        const selectProducto = document.getElementById("ProductoId");
+        const tipoInput = document.getElementById("TipoVenta");
+
+        selectProducto.addEventListener("change", () => {
+            const producto = productos.find(p => p.Id == selectProducto.value);
+
+            if (producto) {
+                tipoInput.value = producto.Tipo;
+            } else {
+                tipoInput.value = "";
+            }
+        });
+    </script>
+
+
+    <!-- ======================== -->
+    <!--   TABLA DETALLES        -->
+    <!-- ======================== -->
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+            <h5 class="fw-semibold mb-3 text-secondary">Detalles de la venta</h5>
+
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Tipo</th>
+                        <th>Cantidad</th>
+                        <th>Subtotal</th>
+                        <th>Fecha</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Detalles != null && Model.Detalles.Any())
+                    {
+                        foreach (var item in Model.Detalles)
+                        {
+                            <tr>
+                                <td>@item.NombreProducto</td>
+                                <td>@item.TipoVenta</td>
+                                <td>@item.Cantidad</td>
+                                <td>$@item.Subtotal</td>
+                                <td>@item.Fecha.ToShortDateString()</td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="5" class="text-center">No hay productos agregados</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <div class="text-end mt-3">
+                <h4 class="text-danger fw-bold">
+                    Total: $
+                    @((Model.Detalles != null) ? Model.Detalles.Sum(x => x.Subtotal) : 0)
+                </h4>
+
+                <form asp-action="ConfirmarVenta" method="post">
+                    <button type="submit" class="btn btn-success mt-2">
+                        <i class="bi bi-check-circle"></i> Finalizar Venta
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+

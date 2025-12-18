@@ -1,0 +1,61 @@
+﻿@model IEnumerable<Producto>
+
+<h2 class="text-danger">Productos desactivados</h2>
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show">
+        <i class="bi bi-check-circle-fill"></i>
+        @TempData["Success"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show">
+        <i class="bi bi-x-circle-fill"></i>
+        @TempData["Error"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+
+    <a asp-action="Index" class="btn btn-outline-primary">
+        <i class="bi bi-arrow-left"></i> Volver a productos
+    </a>
+</div>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Precio</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var p in Model)
+        {
+            <tr>
+                <td>@p.Nombre</td>
+                <td>$@p.Precio</td>
+                <td>
+                    <form asp-action="Restaurar" method="post" class="d-inline">
+                        <input type="hidden" name="id" value="@p.Id" />
+                        <button class="btn btn-success btn-sm">Restaurar</button>
+                    </form>
+
+                    <form asp-action="EliminarDefinitivo" method="post" class="d-inline">
+                        <input type="hidden" name="id" value="@p.Id" />
+                        <button class="btn btn-danger btn-sm"
+                                onclick="return confirm('¿Eliminar definitivamente?');">
+                            Eliminar
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

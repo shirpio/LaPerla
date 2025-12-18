@@ -1,0 +1,39 @@
+﻿@model List<PracticaProfesional2025.Models.DetalleVenta>
+
+<h2>Detalle del día @ViewBag.Fecha.ToShortDateString()</h2>
+
+<a asp-action="ReportePorFecha"
+   asp-route-desde="@ViewBag.Desde?.ToString("yyyy-MM-dd")"
+   asp-route-hasta="@ViewBag.Hasta?.ToString("yyyy-MM-dd")"
+   class="btn btn-secondary">
+    Volver
+</a>
+<a asp-action="ExportarDetalleDiaPdf"
+   asp-route-fecha="@ViewBag.Fecha.ToString("yyyy-MM-dd")"
+   class="btn btn-danger">
+    <i class="bi bi-file-earmark-pdf"></i> Exportar PDF
+</a>
+
+
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Producto</th>
+            <th>Tipo</th>
+            <th>Cantidad</th>
+            <th>Subtotal</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Producto?.Nombre</td>
+                <td>@item.Producto?.Tipo</td>
+                <td>@item.Cantidad</td>
+                <td>$@item.Subtotal</td>
+            </tr>
+        }
+    </tbody>
+</table>
