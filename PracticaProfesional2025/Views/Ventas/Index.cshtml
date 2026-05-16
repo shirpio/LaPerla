@@ -6,7 +6,9 @@
     ViewData["Title"] = "Registrar Venta";
 }
 
+
 <div class="container mt-4">
+
     @if (TempData["Success"] != null)
 {
     <div class="alert alert-success alert-dismissible fade show">
@@ -29,37 +31,84 @@
     <div class="card shadow-sm border-0 mb-4">
         <div class="card-body">
 
-            <form asp-action="AgregarProducto" method="post" class="row g-3">
+            <form asp-action="@(Model.EditIndex != null ? "GuardarEdicion" : "AgregarProducto")"
+                  method="post"
+                  class="row g-3">
+
+                @if (Model.EditIndex != null)
+                {
+                    <input type="hidden" name="index" value="@Model.EditIndex" />
+                }
 
                 <!-- PRODUCTO -->
                 <div class="col-md-4">
                     <label class="form-label fw-semibold">Producto</label>
+
                     <select name="ProductoId" id="ProductoId" class="form-select" required>
+
                         <option value="">-- Seleccione --</option>
+
                         @foreach (var p in ViewBag.Productos)
                         {
-                            <option value="@p.Id">@p.Nombre</option>
+                            if (Model.ProductoEditarId == p.Id)
+                            {
+                                <option value="@p.Id" selected>
+                                    @p.Nombre
+                                </option>
+                            }
+                            else
+                            {
+                                <option value="@p.Id">
+                                    @p.Nombre
+                                </option>
+                            }
                         }
                     </select>
                 </div>
 
-                <!-- TIPO VENTA -->
+                <!-- TIPO -->
                 <div class="col-md-3">
                     <label class="form-label fw-semibold">Tipo de Venta</label>
-                    <input type="text" id="TipoVenta" name="TipoVenta" class="form-control" readonly />
+
+                    <input type="text"
+                           id="TipoVenta"
+                           name="TipoVenta"
+                           class="form-control"
+                           readonly />
                 </div>
 
-                <!-- CANTIDAD / VALOR -->
+                <!-- CANTIDAD -->
                 <div class="col-md-3">
                     <label class="form-label fw-semibold">Valor / Cantidad</label>
-                    <input type="number" step="1" name="Cantidad" id="Cantidad" class="form-control" placeholder="Ej: 2 o 2500" required />
+
+                    <input type="number"
+                           step="1"
+                           name="Cantidad"
+                           id="Cantidad"
+                           class="form-control"
+                           value="@Model.CantidadEditar"
+                           required />
                 </div>
 
                 <!-- BOTÓN -->
                 <div class="col-md-2 d-flex align-items-end">
-                    <button type="submit" class="btn btn-danger w-100">
-                        <i class="bi bi-cart-plus"></i> Agregar
-                    </button>
+
+                    @if (Model.EditIndex != null)
+                    {
+                        <button type="submit" class="btn btn-warning w-100">
+                            <i class="bi bi-save"></i> Guardar 
+                        </button>
+                        <a asp-action="Index" class="btn btn-secondary">
+                            Cancelar
+                        </a>
+                    }
+                    else
+                    {
+                        <button type="submit" class="btn btn-danger w-100">
+                            <i class="bi bi-cart-plus"></i> Agregar
+                        </button>
+                    }
+
                 </div>
 
             </form>
@@ -76,15 +125,24 @@
         const selectProducto = document.getElementById("ProductoId");
         const tipoInput = document.getElementById("TipoVenta");
 
-        selectProducto.addEventListener("change", () => {
+        function actualizarTipoVenta() {
+
             const producto = productos.find(p => p.Id == selectProducto.value);
 
             if (producto) {
                 tipoInput.value = producto.Tipo;
-            } else {
+            }
+            else {
                 tipoInput.value = "";
             }
-        });
+        }
+
+        selectProducto.addEventListener("change", actualizarTipoVenta);
+
+        // IMPORTANTE:
+        // ejecuta automáticamente al cargar
+        actualizarTipoVenta();
+
     </script>
 
 
@@ -96,7 +154,8 @@
         <div class="card-body">
             <h5 class="fw-semibold mb-3 text-secondary">Detalles de la venta</h5>
 
-            <table class="table table-bordered">
+            <div class="table-responsive">
+                <table class="table table-bordered align-middle">
                 <thead>
                     <tr>
                         <th>Producto</th>
@@ -104,6 +163,7 @@
                         <th>Cantidad</th>
                         <th>Subtotal</th>
                         <th>Fecha</th>
+                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -114,9 +174,31 @@
                             <tr>
                                 <td>@item.NombreProducto</td>
                                 <td>@item.TipoVenta</td>
-                                <td>@item.Cantidad</td>
+                                <td>@item.Cantidad.ToString("0.###")</td>
                                 <td>$@item.Subtotal</td>
                                 <td>@item.Fecha.ToShortDateString()</td>
+                                <td class="d-flex gap-1">
+
+                                    <form asp-action="EditarDetalle" method="get">
+                                        <input type="hidden" name="index" value="@Model.Detalles.IndexOf(item)" />
+
+                                        <button type="submit" class="btn btn-sm btn-warning">
+                                            <i class="bi bi-pencil"></i>
+                                        </button>
+                                    </form>
+
+                                    <form asp-action="EliminarDetalle" method="post">
+                                        <input type="hidden" name="index" value="@Model.Detalles.IndexOf(item)" />
+
+                                        <button type="submit"
+                                                class="btn btn-sm btn-danger"
+                                                onclick="return confirm('¿Deseas eliminar este producto de la venta?')">
+                                        <i class="bi bi-trash"></i>
+                                        </button>
+
+                                    </form>
+
+                                </td>
                             </tr>
                         }
                     }
@@ -128,7 +210,7 @@
                     }
                 </tbody>
             </table>
-
+            </div>
             <div class="text-end mt-3">
                 <h4 class="text-danger fw-bold">
                     Total: $

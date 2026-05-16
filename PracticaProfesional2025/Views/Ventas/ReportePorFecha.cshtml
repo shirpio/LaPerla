@@ -17,7 +17,101 @@
         <button class="btn btn-primary w-100" type="submit">Buscar</button>
     </div>
 </form>
+@if (Model.Any())
+{
+    <div class="row mb-4">
 
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+                    <h6 class="text-muted">Total vendido</h6>
+                    <h3>$@Model.First().TotalGeneral.ToString("0.##")</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+                    <h6 class="text-muted">Registros</h6>
+                    <h3>@Model.First().CantidadVentas</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+                    <h6 class="text-muted">Producto más vendido</h6>
+                    <strong>@Model.First().ProductoUnidadTop</strong>
+
+                    <div>
+                        @Model.First().CantidadUnidadTop.ToString("0.##")
+                        unidades
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+                    <h6 class="text-muted">Producto KG top</h6>
+                    <strong>@Model.First().ProductoKgTop</strong>
+
+                    <div>
+                        $@Model.First().TotalKgTop.ToString("0.##")
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+}
+<div class="card shadow-sm border-0 mb-4">
+    <div class="card-body">
+
+        <h5 class="mb-4">
+            Productos más vendidos (unidad)
+        </h5>
+
+        <canvas id="ventasChart" height="120"></canvas>
+
+    </div>
+</div>
+<div class="row">
+
+    <!-- KG -->
+    <div class="col-md-6">
+        <div class="card shadow-sm border-0 mb-4">
+            <div class="card-body">
+
+                <h5 class="mb-4">
+                    Productos KG más rentables
+                </h5>
+
+                <canvas id="kgChart"></canvas>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- VENTAS POR DIA -->
+    <div class="col-md-6">
+        <div class="card shadow-sm border-0 mb-4">
+            <div class="card-body">
+
+                <h5 class="mb-4">
+                    Ventas por día
+                </h5>
+
+                <canvas id="diasChart"></canvas>
+
+            </div>
+        </div>
+    </div>
+
+</div>
 @if (!Model.Any())
 {
     <p class="text-danger">No se encontraron ventas en ese rango.</p>
@@ -72,8 +166,108 @@ else
 
             </ul>
         </nav>
-   } 
+    }
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
 
+        // =========================
+        // KG CHART
+        // =========================
+
+        const kgLabels = @Html.Raw(
+                    Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.GraficoKgLabels)
+            );
+
+    const kgData = @Html.Raw(
+                Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.GraficoKgData)
+        );
+
+    new Chart(document.getElementById('kgChart'), {
+
+            type: 'bar',
+
+            data: {
+                labels: kgLabels,
+
+                datasets: [{
+                    label: 'Dinero generado',
+                    data: kgData,
+                    borderWidth: 1
+                }]
+            },
+
+            options: {
+                responsive: true
+            }
+        });
+
+        // =========================
+        // VENTAS POR DIA
+        // =========================
+
+        const diasLabels = @Html.Raw(
+                Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.VentasDiaLabels)
+        );
+
+    const diasData = @Html.Raw(
+                Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.VentasDiaData)
+        );
+
+    new Chart(document.getElementById('diasChart'), {
+
+            type: 'line',
+
+            data: {
+                labels: diasLabels,
+
+                datasets: [{
+                    label: 'Ventas',
+                    data: diasData,
+                    tension: 0.3
+                }]
+            },
+
+            options: {
+                responsive: true
+            }
+        });
+
+    </script>
+    <script>
+        const labels = @Html.Raw(
+                    Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.GraficoLabels)
+            );
+
+    const data = @Html.Raw(
+                Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.GraficoData)
+        );
+
+    const ctx = document.getElementById('ventasChart');
+
+        new Chart(ctx, {
+            type: 'bar',
+
+            data: {
+                labels: labels,
+
+                datasets: [{
+                    label: 'Cantidad vendida',
+                    data: data,
+                    borderWidth: 1
+                }]
+            },
+
+            options: {
+                responsive: true,
+
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
 }
 
 

@@ -7,7 +7,7 @@ namespace PracticaProfesional2025.Models
     {
         public int Id { get; set; }
         public DateTime Fecha { get; set; }
-        
+
         [Column(TypeName = "decimal(18,2)")]
         public decimal Total { get; set; }
 

@@ -22,6 +22,7 @@ namespace PracticaProfesional2025.Models
         public decimal DineroIngresado { get; set; } // Solo se usa para kg
         [Column(TypeName = "decimal(18,2)")]
         public decimal? Subtotal { get; set; } // Para la venta
+
     }
 
 }

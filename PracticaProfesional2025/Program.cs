@@ -6,6 +6,8 @@ using PracticaProfesional2025.Data;
 using Npgsql;
 using Rotativa.AspNetCore;
 
+QuestPDF.Settings.License = QuestPDF.Infrastructure.LicenseType.Community;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // =======================
@@ -41,7 +43,7 @@ else
 }
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseNpgsql(connectionString));
+ options.UseNpgsql(connectionString));
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
@@ -86,21 +88,7 @@ builder.Services.AddControllersWithViews(options =>
 
 var app = builder.Build();
 
-// =======================
-// ROTATIVA
-// =======================
-RotativaConfiguration.Setup(app.Environment.WebRootPath, "Rotativa");
-
-// =======================
-if (app.Environment.IsDevelopment())
-{
-    app.UseMigrationsEndPoint();
-}
-else
-{
-    app.UseExceptionHandler("/Home/Error");
-    app.UseHsts();
-}
+app.UseDeveloperExceptionPage();
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();

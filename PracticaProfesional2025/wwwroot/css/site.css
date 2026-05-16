@@ -1,22 +1,249 @@
 html {
-  font-size: 14px;
+    font-size: 15px;
+    position: relative;
+    min-height: 100%;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
+    html {
+        font-size: 16px;
+    }
 }
 
 body {
-  margin-bottom: 60px;
+    background: #f5f6fa;
+    color: #2d3436;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin-bottom: 60px;
 }
+
+/* =========================
+   NAVBAR
+========================= */
+
+.navbar {
+    background: white !important;
+    border-bottom: 3px solid #c62828;
+    padding: 14px 0;
+}
+
+.navbar-brand img {
+    height: 65px;
+    transition: 0.3s;
+}
+
+    .navbar-brand img:hover {
+        transform: scale(1.03);
+    }
+
+.nav-link {
+    color: #444 !important;
+    font-weight: 600;
+    margin: 0 6px;
+    border-radius: 10px;
+    padding: 10px 14px !important;
+    transition: 0.2s;
+}
+
+    .nav-link:hover {
+        background: #fff1f1;
+        color: #c62828 !important;
+    }
+
+/* =========================
+   CARDS
+========================= */
+
+.card {
+    border: none !important;
+    border-radius: 18px !important;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.08);
+    transition: 0.2s;
+}
+
+    .card:hover {
+        transform: translateY(-2px);
+    }
+
+/* =========================
+   BOTONES
+========================= */
+
+.btn {
+    border-radius: 12px !important;
+    font-weight: 600;
+    padding: 10px 16px;
+}
+
+.btn-danger {
+    background: #c62828;
+    border: none;
+}
+
+    .btn-danger:hover {
+        background: #b71c1c;
+    }
+
+.btn-success {
+    border: none;
+}
+
+/* =========================
+   TABLAS
+========================= */
+
+.table {
+    background: white;
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+    .table thead {
+        background: #c62828;
+        color: white;
+    }
+
+    .table th {
+        font-weight: 600;
+        border: none !important;
+    }
+
+    .table td {
+        vertical-align: middle;
+    }
+
+    .table tbody tr:hover {
+        background: #fff8f8;
+    }
+
+/* =========================
+   INPUTS
+========================= */
+
+.form-control,
+.form-select {
+    border-radius: 12px !important;
+    padding: 10px;
+    border: 1px solid #ddd;
+}
+
+    .form-control:focus,
+    .form-select:focus {
+        border-color: #c62828;
+        box-shadow: 0 0 0 0.15rem rgba(198,40,40,0.15);
+    }
+
+/* =========================
+   ALERTAS
+========================= */
+
+.alert {
+    border: none;
+    border-radius: 14px;
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+footer {
+    background: white;
+    border-top: 3px solid #c62828;
+    color: #666;
+    text-align: center;
+    padding: 18px;
+    margin-top: 50px;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 768px) {
+
+    .navbar-brand img {
+        height: 50px;
+    }
+
+    .table {
+        font-size: 14px;
+    }
+
+    .btn {
+        width: 100%;
+    }
+
+    .card-body {
+        padding: 1rem;
+    }
+}
+/* =========================
+   TABLAS
+========================= */
+
+.table {
+    border-radius: 14px;
+    overflow: hidden;
+    background: white;
+}
+
+    .table thead {
+        background-color: #C61A1A;
+        color: white;
+    }
+
+        .table thead th {
+            border: none !important;
+            font-weight: 600;
+            padding: 14px;
+        }
+
+    .table tbody td {
+        vertical-align: middle;
+        padding: 14px;
+    }
+
+    .table tbody tr:hover {
+        background-color: #fff5f5;
+        transition: 0.2s;
+    }
+
+/* =========================
+   CARDS
+========================= */
+
+.card {
+    border: none !important;
+    border-radius: 18px !important;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.06);
+}
+
+/* =========================
+   BOTONES
+========================= */
+
+.btn {
+    border-radius: 10px !important;
+    font-weight: 500;
+    transition: 0.2s;
+}
+
+    .btn:hover {
+        transform: translateY(-1px);
+    }
+
+/* =========================
+   INPUTS
+========================= */
+
+.form-control,
+.form-select {
+    border-radius: 10px !important;
+    padding: 10px;
+}
+
+    .form-control:focus,
+    .form-select:focus {
+        border-color: #C61A1A;
+        box-shadow: 0 0 0 0.15rem rgba(198, 26, 26, 0.2);
+    }

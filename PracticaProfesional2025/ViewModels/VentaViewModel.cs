@@ -6,16 +6,28 @@
 
         public decimal Total => Detalles.Sum(d => d.Subtotal);
 
+        // ===== EDITAR =====
+        public int? EditIndex { get; set; }
+
+        public int? ProductoEditarId { get; set; }
+
+        public decimal? CantidadEditar { get; set; }
+
         public class DetalleTemporal
         {
             public int ProductoId { get; set; }
-            public string NombreProducto { get; set; } = "";
-            public string TipoVenta { get; set; } = "";
-            public decimal Cantidad { get; set; }   // para kg: dinero ingresado
-            public decimal Precio { get; set; }     // precio por unidad o por kg
-            public decimal Subtotal { get; set; }   // ya calculado
-            public DateTime Fecha { get; set; }
 
+            public string NombreProducto { get; set; } = "";
+
+            public string TipoVenta { get; set; } = "";
+
+            public decimal Cantidad { get; set; }
+
+            public decimal Precio { get; set; }
+
+            public decimal Subtotal { get; set; }
+
+            public DateTime Fecha { get; set; }
         }
     }
 }
