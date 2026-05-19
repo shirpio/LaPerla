@@ -9,7 +9,7 @@ namespace PracticaProfesional2025.Models
         public int VentaId { get; set; }
         public Venta? Venta { get; set; }
 
-        public DateTime Fecha { get; set; } = DateTime.Now;
+        public DateTime Fecha { get; set; } = DateTime.UtcNow;
 
         public int ProductoId { get; set; }
         public Producto? Producto { get; set; }

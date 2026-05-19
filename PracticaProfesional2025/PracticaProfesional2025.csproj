@@ -25,11 +25,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\Img\" />
+    <Folder Include="wwwroot\img\" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="wwwroot\Img\logo-laperla.jpg" />
+    <None Include="wwwroot\img\logo-laperla.jpg" />
   </ItemGroup>
 
 </Project>

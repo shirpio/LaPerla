@@ -6,7 +6,7 @@ namespace PracticaProfesional2025.Models
     public class Venta
     {
         public int Id { get; set; }
-        public DateTime Fecha { get; set; }
+        public DateTime Fecha { get; set; } = DateTime.UtcNow;
 
         [Column(TypeName = "decimal(18,2)")]
         public decimal Total { get; set; }

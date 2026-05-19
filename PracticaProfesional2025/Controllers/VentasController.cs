@@ -275,10 +275,12 @@ namespace PracticaProfesional2025.Controllers
                 return View(new List<ReporteDiaViewModel>());
             }
 
-            var detalles = _context.DetalleVentas
-                .Where(d => d.Fecha.Date >= desde.Value.Date &&
-                            d.Fecha.Date <= hasta.Value.Date);
+            var fechaDesde = DateTime.SpecifyKind(desde.Value.Date, DateTimeKind.Utc);
+            var fechaHasta = DateTime.SpecifyKind(hasta.Value.Date.AddDays(1).AddTicks(-1), DateTimeKind.Utc);
 
+            var detalles = _context.DetalleVentas
+                .Where(d => d.Fecha >= fechaDesde &&
+                            d.Fecha <= fechaHasta);
             var resumenQuery = detalles
                 .GroupBy(d => d.Fecha.Date)
                 .Select(g => new ReporteDiaViewModel
