@@ -132,8 +132,23 @@ using (var scope = app.Services.CreateScope())
     var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
 
     string email = "admin@LaPerla.com";
-    string password = "Panaderialaperla";
+    string password = "Panaderialaperla123";
+    string demoEmail = "demo@LaPerla.com";
+    string demoPassword = "demo123";
 
+    var demoUser = await userManager.FindByEmailAsync(demoEmail);
+
+    if (demoUser == null)
+    {
+        demoUser = new IdentityUser
+        {
+            UserName = demoEmail,
+            Email = demoEmail,
+            EmailConfirmed = true
+        };
+
+        await userManager.CreateAsync(demoUser, demoPassword);
+    }
     var user = await userManager.FindByEmailAsync(email);
     if (user == null)
     {
