@@ -102,7 +102,7 @@ namespace PracticaProfesional2025.Controllers
                 Cantidad = cantidadReal,     // ← AQUÍ guardamos la cantidad real
                 Precio = producto.Precio,
                 Subtotal = subtotal,
-                Fecha = DateTime.Now
+                Fecha = DateTime.UtcNow
             });
 
             TempData.Put("Detalles", detalles);
@@ -233,7 +233,7 @@ namespace PracticaProfesional2025.Controllers
 
             var venta = new Venta
             {
-                Fecha = DateTime.Now
+                Fecha = DateTime.UtcNow
             };
 
             _context.Ventas.Add(venta);
@@ -247,7 +247,7 @@ namespace PracticaProfesional2025.Controllers
                     ProductoId = d.ProductoId,
                     Cantidad = d.Cantidad,
                     Subtotal = d.Subtotal,
-                    Fecha = d.Fecha
+                    Fecha = DateTime.SpecifyKind(d.Fecha, DateTimeKind.Utc)
                 });
             }
 
