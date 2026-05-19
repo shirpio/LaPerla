@@ -410,6 +410,8 @@ namespace PracticaProfesional2025.Controllers
 
         public IActionResult DetallePorDia(DateTime fecha, DateTime? desde, DateTime? hasta)
         {
+            fecha = DateTime.SpecifyKind(fecha, DateTimeKind.Utc);
+
             var detalles = _context.DetalleVentas
                 .Include(d => d.Producto)
                 .Where(d => d.Fecha.Date == fecha.Date)
@@ -422,8 +424,11 @@ namespace PracticaProfesional2025.Controllers
 
             return View(detalles);
         }
+
         public IActionResult ExportarDetalleDiaPdf(DateTime fecha)
         {
+            fecha = DateTime.SpecifyKind(fecha, DateTimeKind.Utc);
+
             var detalles = _context.DetalleVentas
                 .Include(d => d.Producto)
                 .Where(d => d.Fecha.Date == fecha.Date)
